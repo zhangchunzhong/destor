@@ -4,7 +4,7 @@
  *  Created on: Mar 24, 2014
  *      Author: fumin
  */
-#include "../destor.h"
+#include "destor.h"
 #include "index.h"
 #include "../storage/containerstore.h"
 #include "../recipe/recipestore.h"
