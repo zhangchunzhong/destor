@@ -9,17 +9,20 @@ AM_INIT_AUTOMAKE([destor], [2.0])
 AC_PROG_CC
 CFLAGS="-g -O2 -Wall"
 
+CFLAGS="-I/usr/include/glib-2.0 -I/usr/lib/x86_64-linux-gnu/glib-2.0/include ${CFLAGS}"
+LDFLAGS="-L/usr/lib/x86_64-linux-gnu/ ${LDFLAGS}"
+
 # Checks for libraries.
 AC_CHECK_LIB([pthread], [pthread_create])
-AC_CHECK_LIB([glib], [g_hash_table_new],[found_glib=yes],[found_glib=no])
+AC_CHECK_LIB([glib-2.0], [g_hash_table_new],[found_glib=yes],[found_glib=no])
     if test "$found_glib" = "no"; then
     AC_MSG_ERROR([*** Working glib library not found ***])
     fi
-AC_CHECK_LIB([glib], [g_thread_init],[thread_safe=no],[thread_safe=yes])
+AC_CHECK_LIB([glib-2.0], [g_thread_init],[thread_safe=no],[thread_safe=yes])
     if test "$thread_safe" = "no"; then
     AC_MSG_ERROR([*** The version of glib is too low ***])
     fi
-AC_CHECK_LIB([crypto],[SHA_Update],[found_crypto=yes],[found_crypto=no])
+AC_CHECK_LIB([crypto],[OPENSSL_init_crypto],[found_crypto=yes],[found_crypto=no])
     if test "$found_crypto" = "no"; then
     AC_MSG_ERROR([*** Working crypto library not found ***])
     fi
