@@ -1,0 +1,24 @@
+[package]
+name = "destor"
+version = "0.0.1"
+authors = ["Julian Zhang <carol.nichols@gmail.com>"]
+description = "A Rust implementation of dedupe algorithms."
+license = "Apache-2.0"
+keywords = ["dedupe"]
+homepage = "https://github.com/zhangchunzhong/destor"
+repository = "https://github.com/zhangchunzhong/destor"
+readme = "README.md"
+categories = ["dedupe"]
+exclude = ["test/*"]
+
+[dependencies]
+crc = "1.8.1"
+adler32 = "1.1.0"
+byteorder = "1.3.4"
+libc = "0.2.73"
+
+[profile.release]
+debug = false 
+
+[lib]
+crate-type = ["staticlib"]

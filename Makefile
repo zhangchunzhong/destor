@@ -3,7 +3,7 @@ CXX ?= g++
 
 override CFLAGS := -W -Wall -Wextra -pedantic -lm -O3 -Wno-unused-function -fPIC $(shell pkg-config --cflags glib-2.0) -I src/include -I src/ $(CFLAGS) 
 override CXXFLAGS := -W -Wall -Wextra -pedantic -O3 -fPIC $(shell pkg-config --cflags glib-2.0) -I src/include -I src/ $(CXXFLAGS)
-override LDFLAGS  := $(shell pkg-config --libs glib-2.0) $(shell pkg-config --libs openssl) -lpthread $(LDFLAGS)
+override LDFLAGS  := $(shell pkg-config --libs glib-2.0) $(shell pkg-config --libs openssl) -lpthread -ldl $(LDFLAGS)
 
 
 DESTORLIB_SRC = src/utils/bloom_filter.c  src/utils/lru_cache.c  src/utils/queue.c  src/utils/sds.c  src/utils/serial.c  src/utils/sync_queue.c src/utils/config.c src/utils/jcr.c \
@@ -16,39 +16,28 @@ DESTORLIB_SRC = src/utils/bloom_filter.c  src/utils/lru_cache.c  src/utils/queue
 		src/rewrite/cap_rewrite.c  src/rewrite/cbr_rewrite.c  src/rewrite/cfl_rewrite.c  src/rewrite/har_rewrite.c \
 		src/action/do_backup.c  src/action/do_delete.c  src/action/do_restore.c \
 		src/restore/assembly_restore.c  src/restore/optimal_restore.c  src/restore/restore_aware.c 
-
 DESTORLIB_OBJ := $(patsubst %.c,obj/%.o,$(DESTORLIB_SRC))
 DESTORBIN_SRC := src/cli/destor.c
 DESTORBIN_OBJ := $(patsubst %.c,obj/%.o,$(DESTORBIN_SRC))
+DESTOR_RUST_RELEASE := target/release/libdestor.a
 
-.PHONY: all  destor-cli libdestor.a libdestor
+.PHONY: all destor ${DESTOR_RUST_RELEASE}
 
-all: destor-cli libdestor.a libdestor
+all: destor ${DESTOR_RUST_RELEASE}
+
+.PHONY: target/release/libdestor.a
+target/release/libdestor.a:
+	cargo build --verbose --release
 
 obj/%.o: %.c
 	@mkdir -p `dirname $@`
 	$(CC) $(CFLAGS) -c $< -o $@
 
-obj/%.o: %.cc
-	@mkdir -p `dirname $@`
-	$(CXX) $(CXXFLAGS) -c $< -o $@
-
-obj/%.o: %.cpp
-	@mkdir -p `dirname $@`
-	$(CXX) $(CXXFLAGS) -c $< -o $@
-
 # destor binary
-destor-cli: $(DESTORLIB_OBJ) $(DESTORBIN_OBJ)
-	$(CC) $^ $(CFLAGS) -o $@ $(LDFLAGS)
+destor: ${DESTOR_RUST_RELEASE}
+	$(CC) $(CFLAGS) $(DESTORLIB_SRC) $(DESTORBIN_SRC) ${DESTOR_RUST_RELEASE} -o destor $(LDFLAGS)
 
-# Zopfli shared library
-libdestor: $(DESTORLIB_OBJ)
-	$(CC) $^ $(CFLAGS) -shared -Wl,-soname,libdestor.so.1 -o libdestor.so.0.0.1 $(LDFLAGS)
-
-# Zopfli static library
-libdestor.a: $(DESTORLIB_OBJ)
-	ar rcs $@ $^
 
 # Remove all libraries and binaries
 clean:
-	rm -rf destor-cli $(DESTORLIB_OBJ) $(DESTORBIN_OBJ)  libdestor* obj
+	rm -rf destor $(DESTORLIB_OBJ) $(DESTORBIN_OBJ)  libdestor* obj target

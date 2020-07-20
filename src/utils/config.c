@@ -7,6 +7,7 @@
 
 #include "destor.h"
 
+/*
 int yesnotoi(char *s) {
 	if (strcasecmp(s, "yes") == 0)
 		return 1;
@@ -15,6 +16,7 @@ int yesnotoi(char *s) {
 	else
 		return -1;
 }
+*/
 
 void load_config_from_string(sds config) {
 	char *err = NULL;
