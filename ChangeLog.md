@@ -1,8 +1,9 @@
 # Migrate destor from c to rust
 
-## 2019-07-19
-- try to make it build passed
-- change glib to glib-2.0 
+
 ## 2019-07-20
 - add Cargo.toml followed by https://is.gd/c_rust
 
+## 2019-07-19
+- try to make it build passed
+- change glib to glib-2.0

@@ -21,16 +21,21 @@ Environment
 -----------
 Linux 64bit.
 
+Build
+-----
+Follow the steps in followed by https://is.gd/c_rust
 
 INSTALL
 -------
+see doc/README.md
 
 Running
 -------
-
+see doc/README.md
 
 Configuration
 -------------
+see doc/README.md
 
 Author
 ------
