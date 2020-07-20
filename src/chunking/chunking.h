@@ -10,8 +10,8 @@ void chunkAlg_init();
 int rabin_chunk_data(unsigned char *p, int n);
 int normalized_rabin_chunk_data(unsigned char *p, int n);
 
-void ae_init();
-int ae_chunk_data(unsigned char *p, int n);
+extern void ae_init(int min, int max, int avg);
+extern int ae_chunk_data(unsigned char *p, int n);
 
 int tttd_chunk_data(unsigned char *p, int n);
 

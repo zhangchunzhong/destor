@@ -19,15 +19,22 @@ see doc/README.md
 
 Environment
 -----------
-Linux 64bit.
+[Linux Mint 20](https://linuxmint.com/)
 
 Build
 -----
-Follow the steps in followed by https://is.gd/c_rust
+Follow the steps in page https://is.gd/c_rust
 
 INSTALL
 -------
-see doc/README.md
+```sh
+#install openssl
+sudo apt-get install -y libssl-dev
+#install glib-2.0
+sudo apt-get install -y libglib2.0-dev
+#install rust
+curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+```
 
 Running
 -------

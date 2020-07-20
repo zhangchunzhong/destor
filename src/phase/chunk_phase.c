@@ -173,7 +173,7 @@ void start_chunk_phase() {
 		assert(destor.chunk_max_size <= CONTAINER_SIZE - CONTAINER_META_SIZE);
 
 		chunking = ae_chunk_data;
-		ae_init();
+		ae_init(destor.chunk_min_size, destor.chunk_max_size, destor.chunk_avg_size);
 	}else{
 		NOTICE("Invalid chunking algorithm");
 		exit(1);
