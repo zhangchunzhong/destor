@@ -4,14 +4,25 @@ use libc::c_int;
 use std::ffi::CStr;
 use std::os::raw::c_char;
 
+#[link(name = "chunking", kind = "static")]
+extern "C" {
+    pub fn __ae_init(
+        min: ::std::os::raw::c_int,
+        max: ::std::os::raw::c_int,
+        avg: ::std::os::raw::c_int,
+    );
+
+    pub fn __ae_chunk_data(
+        p: *mut ::std::os::raw::c_uchar,
+        n: ::std::os::raw::c_int,
+    ) -> ::std::os::raw::c_int;
+}
+
 //Paper title: "AE: An Asymmetric Extremum Content Defined Chunking Algorithm for Fast and Bandwidth-Efficient Data Deduplication"
 //http://ranger.uta.edu/~jiang/publication/Conferences/2015/2015-INFOCOM-AE-%20An%20Asymmetric%20Extremum%20Content%20Defined%20Chunking%20Algorithm%20for%20Fast%20and%20Bandwidth-Efficient%20Data%20Deduplication.pdf
-
 static mut WIN_SIZ: c_int = 0;
 static mut CHK_MAX: c_int = 0;
 static mut CHK_MIN: c_int = 0;
-
-/* from c code */
 
 #[no_mangle]
 pub extern "C" fn ae_init(min: c_int, max: c_int, avg: c_int) {
@@ -50,7 +61,7 @@ Output: chunked position (cut-point), i
 #[no_mangle]
 pub extern "C" fn ae_chunk_data(p: *const c_char, n: c_int) -> c_int {
     let winsz = unsafe { WIN_SIZ };
-    let chkmax = unsafe { CHK_MAX } ;
+    let chkmax = unsafe { CHK_MAX };
     if n <= winsz + 8 {
         return n;
     }
@@ -62,13 +73,13 @@ pub extern "C" fn ae_chunk_data(p: *const c_char, n: c_int) -> c_int {
     i = i + 1;
     while i < slen {
         if buf[i] <= maxv {
-            if i == (maxp + winsz as usize) || i == chkmax as usize  {
-                return i as c_int
-            }        
-        }  else {
+            if i == (maxp + winsz as usize) || i == chkmax as usize {
+                return i as c_int;
+            }
+        } else {
             maxv = buf[i];
             maxp = i;
-        } 
+        }
         i = i + 1;
     }
     return n;

@@ -10,7 +10,7 @@ DESTORLIB_SRC = src/utils/bloom_filter.c  src/utils/lru_cache.c  src/utils/queue
 		src/utils/serial.c  src/utils/sync_queue.c src/utils/config.c src/utils/jcr.c \
 		src/index/fingerprint_cache.c  src/index/index.c  src/index/kvstore.c  src/index/kvstore_htable.c  \
 		src/index/sampling_method.c  src/index/segmenting_method.c  src/index/similarity_detection.c \
-		src/chunking/ae_chunking.c  src/chunking/rabin_chunking.c \
+		src/chunking/rabin_chunking.c \
 		src/fsl/libhashfile.c  src/fsl/read_fsl_trace.c \
 		src/recipe/recipestore.c src/storage/containerstore.c src/storage/cma.c \
 		src/phase/chunk_phase.c  src/phase/dedup_phase.c  src/phase/filter_phase.c  src/phase/hash_phase.c \
